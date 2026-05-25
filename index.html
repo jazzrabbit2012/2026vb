@@ -1,20 +1,440 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Biennale Arte 2026 — In Minor Keys</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/index-CgkiuJNT.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DoEDdplS.css">
-  </head>
-  <body>
-    <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(21,34,27,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.12);padding:12px 24px;display:flex;align-items:center;gap:24px;font-family:'Helvetica Neue',Arial,'Noto Sans SC','Microsoft YaHei','PingFang SC',sans-serif;">
-      <a href="index.html" style="color:#f0c040;text-decoration:none;font-weight:600;font-size:0.95rem;">主题馆导航</a>
-      <a href="2026-national.html" style="color:#ffffff;text-decoration:none;font-weight:400;font-size:0.95rem;">国家馆导航</a>
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>威尼斯双年展 2026 — 平行展手册</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --card-bg: #ffffff;
+    --text: #1a1a1a;
+    --text-secondary: #666;
+    --accent: #c41e3a;
+    --border: #e8e8e4;
+    --nav-bg: #1a1a1a;
+    --nav-text: #ccc;
+    --nav-active: #fff;
+    --day1: #c41e3a;
+    --day2: #2a6496;
+    --day3: #5a8a3c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: var(--nav-bg);
+    color: #fff;
+    padding: 48px 24px 36px;
+    text-align: center;
+    position: relative;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  header .subtitle {
+    font-size: 14px;
+    color: #999;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+  }
+  header .dates {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #777;
+    letter-spacing: 0.06em;
+  }
+
+  /* Layout */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* Sidebar Navigation */
+  nav {
+    width: 280px;
+    min-width: 280px;
+    background: #0d0d0d;
+    border-right: 1px solid #2a2a2a;
+    padding: 24px 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  nav .nav-section {
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+  nav .nav-section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #666;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  nav a {
+    display: block;
+    padding: 8px 20px;
+    font-size: 13px;
+    color: #bbb;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  nav a:hover {
+    color: #fff;
+    background: #1a1a1a;
+    border-left-color: #555;
+  }
+  nav a .exh-num {
+    display: inline-block;
+    width: 22px;
+    font-size: 11px;
+    color: #777;
+    font-weight: 500;
+  }
+  nav a .exh-venue {
+    display: block;
+    font-size: 11px;
+    color: #777;
+    margin-top: 1px;
+  }
+
+  /* Main Content */
+  main {
+    flex: 1;
+    padding: 40px 48px;
+    max-width: 960px;
+  }
+
+  /* Day Header */
+  .day-header {
+    margin: 48px 0 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-header:first-child { margin-top: 0; }
+  .day-header h2 {
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+  }
+  .day-header .day-date {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .day-header .day-route {
+    margin-top: 8px;
+  }
+  .day-header .day-route img {
+    max-width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* Exhibition Card */
+  .exhibition {
+    margin-bottom: 48px;
+    scroll-margin-top: 24px;
+  }
+  .exhibition .exh-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .exhibition .exh-num-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+  .exhibition .exh-venue {
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+  }
+  .exhibition h3 {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    letter-spacing: 0.03em;
+  }
+  .exhibition .exh-artist {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .exhibition .exh-critique {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: #f9f9f7;
+    border-left: 3px solid var(--border);
+    border-radius: 0 4px 4px 0;
+  }
+  .exhibition .exh-image {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    display: block;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 48px 24px;
+    color: #aaa;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .layout { flex-direction: column; }
+    nav {
+      width: 100%; min-width: 100%; height: auto;
+      position: static; border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    main { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>威尼斯双年展 2026</h1>
+  <div class="subtitle">PARALLEL EXHIBITIONS HANDBOOK &middot; 平行展手册</div>
+  <div class="dates">2026年6月19日 — 6月21日</div>
+</header>
+
+<div class="layout">
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-title">Day 1 &middot; 6月19日</div>
+      <a href="#exh01"><span class="exh-num">01</span>Helter Skelter<span class="exh-venue">Fondazione Prada</span></a>
+      <a href="#exh02"><span class="exh-num">02</span>Jenny Saville a Ca' Pesaro<span class="exh-venue">Ca' Pesaro</span></a>
+      <a href="#exh03"><span class="exh-num">03</span>Strange Rules<span class="exh-venue">Palazzo Diedo</span></a>
+      <a href="#exh04"><span class="exh-num">04</span>Unfinished<span class="exh-venue">Palazzo Diedo</span></a>
+      <a href="#exh05"><span class="exh-num">05</span>Co-travellers<span class="exh-venue">Palazzo Grassi</span></a>
+      <a href="#exh06"><span class="exh-num">06</span>The Promise of Change<span class="exh-venue">Palazzo Grassi</span></a>
+      <a href="#exh07"><span class="exh-num">07</span>Third Person<span class="exh-venue">Punta della Dogana</span></a>
+      <a href="#exh08"><span class="exh-num">08</span>Algebra<span class="exh-venue">Punta della Dogana</span></a>
     </div>
-    <div id="root"></div>
-  </body>
+    <div class="nav-section">
+      <div class="nav-section-title">Day 2 &middot; 6月20日</div>
+      <a href="#exh09"><span class="exh-num">09</span>Lee Ufan<span class="exh-venue">Procuratie Vecchie</span></a>
+      <a href="#exh10"><span class="exh-num">10</span>Emballage / Cricotage<span class="exh-venue">Procuratie Vecchie</span></a>
+      <a href="#exh11"><span class="exh-num">11</span>Screen Melancholy<span class="exh-venue">Palazzo delle Prigioni</span></a>
+      <a href="#exh12"><span class="exh-num">12</span>Elegy continues<span class="exh-venue">Chiesa di Sant'Antonin</span></a>
+      <a href="#exh13"><span class="exh-num">13</span>Tide of Returns<span class="exh-venue">Ocean Space</span></a>
+      <a href="#exh14"><span class="exh-num">14</span>Transforming Energy<span class="exh-venue">Gallerie dell'Accademia</span></a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">Day 3 &middot; 6月21日</div>
+      <a href="#exh15"><span class="exh-num">15</span>Peggy Guggenheim in London<span class="exh-venue">Peggy Guggenheim Collection</span></a>
+      <a href="#exh16"><span class="exh-num">16</span>The-exchange-value-of-language...<span class="exh-venue">Casa dei Tre Oci</span></a>
+      <a href="#exh17"><span class="exh-num">17</span>Eroi d'Oro<span class="exh-venue">Fondazione Giorgio Cini</span></a>
+      <a href="#exh18"><span class="exh-num">18</span>The Shape of Time<span class="exh-venue">Basilica di San Giorgio Maggiore</span></a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ===== DAY 1 ===== -->
+    <div class="day-header" id="day1">
+      <h2>Day 1 &middot; 6月19日（周五）</h2>
+      <div class="day-date">大运河两岸的图像解构与政治批判</div>
+      <div class="day-route"><img src="images/平行展day 1.png" alt="Day 1 路线图" loading="lazy"></div>
+    </div>
+
+    <div class="exhibition" id="exh01">
+      <div class="exh-meta"><span class="exh-num-badge">01</span><span class="exh-venue">Fondazione Prada / Ca' Corner della Regina</span></div>
+      <h3>Helter Skelter（混乱螺旋）</h3>
+      <div class="exh-artist">Arthur Jafa（阿瑟·贾法）&amp; Richard Prince（理查德·普林斯）</div>
+      <div class="exh-critique">批评入口：大众图像、种族政治、挪用机制、美国视觉文化。作为开篇展览，先建立全程的图像政治基调。</div>
+      <img class="exh-image" src="images/01_Helter_Skelter.jpeg" alt="Helter Skelter" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh02">
+      <div class="exh-meta"><span class="exh-num-badge">02</span><span class="exh-venue">Ca' Pesaro（佩萨罗宫）</span></div>
+      <h3>Jenny Saville a Ca' Pesaro（珍妮·萨维尔在佩萨罗宫）</h3>
+      <div class="exh-artist">Jenny Saville（珍妮·萨维尔）</div>
+      <div class="exh-critique">批评入口：身体、绘画尺度、性别身体、威尼斯绘画传统。把图像批判从媒体转向绘画身体。</div>
+      <img class="exh-image" src="images/02_Jenny_Saville_a_Ca_Pesaro.jpeg" alt="Jenny Saville a Ca' Pesaro" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh03">
+      <div class="exh-meta"><span class="exh-num-badge">03</span><span class="exh-venue">Palazzo Diedo（迪耶多宫）</span></div>
+      <h3>Strange Rules（奇异规则）</h3>
+      <div class="exh-artist">Holly Herndon（霍莉·赫恩登）&amp; Mat Dryhurst（马特·德赖赫斯特）</div>
+      <div class="exh-critique">批评入口：AI声音、机器学习、合成主体、交互系统。在古宫殿中观察声音与算法如何制造新的中介空间。</div>
+      <img class="exh-image" src="images/03_Strange_Rules.jpeg" alt="Strange Rules" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh04">
+      <div class="exh-meta"><span class="exh-num-badge">04</span><span class="exh-venue">Palazzo Diedo（迪耶多宫）</span></div>
+      <h3>Unfinished（未完成）</h3>
+      <div class="exh-artist">Ceal Floyer（西尔·弗洛耶）</div>
+      <div class="exh-critique">批评入口：极简主义、语言、日常动作、观念艺术。与AI声音展并置观看，两者都在削弱传统艺术对象的稳定边界。</div>
+      <img class="exh-image" src="images/04_Unfinished.jpeg" alt="Unfinished" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh05">
+      <div class="exh-meta"><span class="exh-num-badge">05</span><span class="exh-venue">Palazzo Grassi（格拉西宫）</span></div>
+      <h3>Co-travellers（同行者）</h3>
+      <div class="exh-artist">Amar Kanwar（阿马尔·坎瓦尔）</div>
+      <div class="exh-critique">批评入口：印度影像、证词、生态政治、司法叙事。把政治问题从新闻事件转入时间、证词与记忆。</div>
+      <img class="exh-image" src="images/05_Co-travellers.jpeg" alt="Co-travellers" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh06">
+      <div class="exh-meta"><span class="exh-num-badge">06</span><span class="exh-venue">Palazzo Grassi（格拉西宫）</span></div>
+      <h3>The Promise of Change（改变的承诺）</h3>
+      <div class="exh-artist">Michael Armitage（迈克尔·阿米蒂奇）</div>
+      <div class="exh-critique">批评入口：东非绘画、后殖民图像、新闻图像、神话结构。比较影像证词与绘画寓言如何处理暴力和公共事件。</div>
+      <img class="exh-image" src="images/06_The_Promise_of_Change.jpeg" alt="The Promise of Change" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh07">
+      <div class="exh-meta"><span class="exh-num-badge">07</span><span class="exh-venue">Punta della Dogana（海关大楼）</span></div>
+      <h3>Third Person（第三人称）</h3>
+      <div class="exh-artist">Lorna Simpson（洛娜·辛普森）</div>
+      <div class="exh-critique">批评入口：身份、影像档案、非裔女性经验、第三人称叙事。重点看她如何把身体从直接叙述中抽离。</div>
+      <img class="exh-image" src="images/07_Third_Person.jpeg" alt="Third Person" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh08">
+      <div class="exh-meta"><span class="exh-num-badge">08</span><span class="exh-venue">Punta della Dogana（海关大楼）</span></div>
+      <h3>Algebra（代数）</h3>
+      <div class="exh-artist">Paulo Nazareth（保罗·纳扎雷斯）</div>
+      <div class="exh-critique">批评入口：殖民制图、迁徙、身体运动、拉丁美洲政治。与Lorna Simpson并置：一个处理档案中的身份，一个处理地理中的身体。</div>
+      <img class="exh-image" src="images/08_Algebra.jpeg" alt="Algebra" loading="lazy">
+    </div>
+
+    <!-- ===== DAY 2 ===== -->
+    <div class="day-header" id="day2">
+      <h2>Day 2 &middot; 6月20日（周六）</h2>
+      <div class="day-date">圣马可核心话语场与空间介入</div>
+      <div class="day-route"><img src="images/平行展day 2png.png" alt="Day 2 路线图" loading="lazy"></div>
+    </div>
+
+    <div class="exhibition" id="exh09">
+      <div class="exh-meta"><span class="exh-num-badge">09</span><span class="exh-venue">Procuratie Vecchie（旧行政官邸）</span></div>
+      <h3>Lee Ufan（李禹焕）</h3>
+      <div class="exh-artist">Lee Ufan（李禹焕）</div>
+      <div class="exh-critique">批评入口：石头、钢板、现象学、物与场域。以物质存在和空间感知作为Day 2的开端。</div>
+      <img class="exh-image" src="images/09_Lee_Ufan.jpeg" alt="Lee Ufan" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh10">
+      <div class="exh-meta"><span class="exh-num-badge">10</span><span class="exh-venue">Procuratie Vecchie（旧行政官邸）</span></div>
+      <h3>Emballage / Cricotage and Madame Jarema（包装 / Cricotage与雅雷玛夫人）</h3>
+      <div class="exh-artist">Tadeusz Kantor（塔德乌什·康托尔）</div>
+      <div class="exh-critique">批评入口：前卫戏剧、包装、贫穷剧场、二十世纪政治压迫。与Lee Ufan形成"双击"：一个把物压到最少，一个把历史残片推向戏剧行动。</div>
+      <img class="exh-image" src="images/10_Emballage_Cricotage_and_Madame_Jarema.jpeg" alt="Emballage / Cricotage and Madame Jarema" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh11">
+      <div class="exh-meta"><span class="exh-num-badge">11</span><span class="exh-venue">Palazzo delle Prigioni（普里奇奥尼宫 / 监狱宫）</span></div>
+      <h3>Screen Melancholy（屏幕忧郁）</h3>
+      <div class="exh-artist">Li Yi-Fan（李亦凡）</div>
+      <div class="exh-critique">批评入口：游戏引擎、虚拟异化、反乌托邦、监狱空间。观看数字拟像如何和历史幽闭空间发生压迫性叠合。</div>
+      <img class="exh-image" src="images/11_Screen_Melancholy.jpeg" alt="Screen Melancholy" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh12">
+      <div class="exh-meta"><span class="exh-num-badge">12</span><span class="exh-venue">Chiesa di Sant'Antonin（圣安东宁教堂）</span></div>
+      <h3>Elegy continues（挽歌继续）</h3>
+      <div class="exh-artist">Gabrielle Goliath（加布里埃尔·戈利亚特）</div>
+      <div class="exh-critique">批评入口：哀悼、审查、性别暴力、种族化暴力、非语言见证。重点看"持续的声音"如何替代宣言式政治表达。</div>
+      <img class="exh-image" src="images/12_Elegy_continues.jpeg" alt="Elegy continues" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh13">
+      <div class="exh-meta"><span class="exh-num-badge">13</span><span class="exh-venue">Ocean Space / Chiesa di San Lorenzo（海洋空间 / 圣洛伦佐教堂）</span></div>
+      <h3>Tide of Returns（归返之潮）</h3>
+      <div class="exh-artist">Repatriates Collective（返乡者共同体）</div>
+      <div class="exh-critique">批评入口：归还、海洋、殖民史、生态与档案。把哀悼政治转向返还政治和海洋空间中的制度记忆。</div>
+      <img class="exh-image" src="images/13_Tide_of_Returns.jpeg" alt="Tide of Returns" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh14">
+      <div class="exh-meta"><span class="exh-num-badge">14</span><span class="exh-venue">Gallerie dell'Accademia（学院美术馆）</span></div>
+      <h3>Transforming Energy（转化能量）</h3>
+      <div class="exh-artist">Marina Abramović（玛丽娜·阿布拉莫维奇）</div>
+      <div class="exh-critique">批评入口：身体、能量、精神实践、古典绘画空间。作为Day 2的重量级收束，观察行为艺术的身体系统如何进入威尼斯古典绘画谱系。</div>
+      <img class="exh-image" src="images/14_Transforming_Energy.jpeg" alt="Transforming Energy" loading="lazy">
+    </div>
+
+    <!-- ===== DAY 3 ===== -->
+    <div class="day-header" id="day3">
+      <h2>Day 3 &middot; 6月21日（周日）</h2>
+      <div class="day-date">离岛灵性、物质演变与档案社会学</div>
+      <div class="day-route"><img src="images/平行展day 3.png" alt="Day 3 路线图" loading="lazy"></div>
+    </div>
+
+    <div class="exhibition" id="exh15">
+      <div class="exh-meta"><span class="exh-num-badge">15</span><span class="exh-venue">Peggy Guggenheim Collection（佩吉·古根海姆美术馆）</span></div>
+      <h3>Peggy Guggenheim in London: The Making of a Collector（佩吉·古根海姆在伦敦：一位收藏家的形成）</h3>
+      <div class="exh-artist">Peggy Guggenheim Collection</div>
+      <div class="exh-critique">批评入口：机构档案、收藏史、伦敦前卫网络、二战前夜。观看收藏如何通过空间、关系和市场建构现代艺术网络。</div>
+      <img class="exh-image" src="images/15_Peggy_Guggenheim_in_London_The_Making_of_a_Collector.jpeg" alt="Peggy Guggenheim in London" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh16">
+      <div class="exh-meta"><span class="exh-num-badge">16</span><span class="exh-venue">Berggruen Institute Europe / Casa dei Tre Oci（贝格鲁恩欧洲研究院 / 三只眼之家）</span></div>
+      <h3>The-exchange-value-of-language-has-fallen-to-zero（语言的交换价值已经跌至零）</h3>
+      <div class="exh-artist">Joseph Kosuth（约瑟夫·科苏斯）</div>
+      <div class="exh-critique">批评入口：观念艺术、语言、资本、交换价值、威尼斯作为思想场。把收藏制度问题推进到语言与价值问题。</div>
+      <img class="exh-image" src="images/16_The-exchange-value-of-language-has-fallen-to-zero.jpeg" alt="The-exchange-value-of-language-has-fallen-to-zero" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh17">
+      <div class="exh-meta"><span class="exh-num-badge">17</span><span class="exh-venue">Fondazione Giorgio Cini（乔治·奇尼基金会）</span></div>
+      <h3>Eroi d'Oro（黄金英雄）</h3>
+      <div class="exh-artist">Georg Baselitz（格奥尔格·巴塞利茨）</div>
+      <div class="exh-critique">批评入口：新表现主义、倒置图像、金箔、战后德国绘画。在修道院空间中观看晚期Baselitz的英雄主题。</div>
+      <img class="exh-image" src="images/17_Eroi_d_Oro.jpeg" alt="Eroi d'Oro" loading="lazy">
+    </div>
+
+    <div class="exhibition" id="exh18">
+      <div class="exh-meta"><span class="exh-num-badge">18</span><span class="exh-venue">Basilica di San Giorgio Maggiore（圣乔治·马焦雷大教堂）</span></div>
+      <h3>The Shape of Time（时间的形状）</h3>
+      <div class="exh-artist">Barry X Ball（巴里·X·鲍尔）</div>
+      <div class="exh-critique">批评入口：CNC雕刻、抛光、稀有材质、文艺复兴建筑秩序。作为三日路线的空间高潮，观察新技术、劳动和帕拉迪奥式教堂光线之间的冲突。</div>
+      <img class="exh-image" src="images/18_The_Shape_of_Time.jpeg" alt="The Shape of Time" loading="lazy">
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  威尼斯双年展 2026 &middot; 平行展手册 &middot; La Biennale di Venezia 2026 — Parallel Exhibitions
+</footer>
+
+</body>
 </html>
