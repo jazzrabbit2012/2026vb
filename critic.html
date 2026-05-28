@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>威尼斯双年展2026 平行展线上展厅</title>
+    <style>
+        /* 基础样式与变量定义 */
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --accent-color: #ff3333;
+            --card-bg: #1e1e1e;
+            --nav-bg: #1a1a1a;
+            --border-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* 布局框架 */
+        #app {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 100vh;
+        }
+
+        /* 顶部返回导航 */
+        .top-return-nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(21, 34, 27, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 14px 28px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 24px;
+            font-family: 'Helvetica Neue', Arial, 'Noto Sans SC', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+        }
+        .top-return-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+        .top-return-nav a:hover { opacity: 0.8; }
+        .top-return-nav a.active { color: #f0c040; font-weight: 600; }
+
+        /* 侧边栏主导航 */
+        aside {
+            background-color: var(--nav-bg);
+            border-right: 1px solid var(--border-color);
+            padding: 20px;
+            height: 100vh;
+            position: sticky;
+            top: 60px;
+            overflow-y: auto;
+        }
+
+        aside h1 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            letter-spacing: 1px;
+        }
+
+        .nav-group {
+            margin-bottom: 20px;
+        }
+
+        .nav-group h3 {
+            font-size: 0.85rem;
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+
+        aside ul {
+            list-style: none;
+        }
+
+        aside li {
+            margin-bottom: 5px;
+        }
+
+        aside a {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        aside a:hover, aside a.active {
+            background-color: var(--card-bg);
+            color: #fff;
+            border-left: 3px solid var(--accent-color);
+            padding-left: 9px;
+        }
+
+        /* 主体内容区（二级页面） */
+        main {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 展厅页面元素样式 */
+        .exhibition-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .exhibition-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #fff;
+        }
+
+        .exhibition-title-cn {
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: #aaa;
+            margin-bottom: 12px;
+        }
+
+        .meta-info {
+            display: flex;
+            gap: 20px;
+            color: #888;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-info span strong {
+            color: var(--text-color);
+        }
+
+        /* 媒体占位框（图片/视频外链） */
+        .media-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .media-box {
+            background-color: var(--card-bg);
+            border: 1px dashed var(--border-color);
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .media-box img, .media-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        /* 结构化内容板块 */
+        .content-section {
+            margin-bottom: 35px;
+        }
+
+        .content-section h2 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        .content-section h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .content-section p {
+            color: #ccc;
+            line-height: 1.85;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .content-section p:last-child { margin-bottom: 0; }
+
+        .critic-box {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #ccc;
+        }
+
+        .strategy-box {
+            border-left: 2px solid #555;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 0 4px 4px 0;
+            color: #ccc;
+            font-size: 0.93rem;
+            line-height: 1.75;
+        }
+
+        .transport-box {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: 4px;
+            font-family: 'Menlo', 'SF Mono', monospace;
+            font-size: 0.85rem;
+            color: #999;
+            line-height: 1.7;
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .tag {
+            background-color: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-color);
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            color: #888;
+            letter-spacing: 0.04em;
+        }
+
+        .source-note {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .source-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #777;
+        }
+
+        .source-list li {
+            font-size: 0.82rem;
+            line-height: 1.65;
+            margin-bottom: 6px;
+        }
+
+        .source-list a {
+            color: #e07040;
+            text-decoration: none;
+        }
+
+        .source-list a:hover { text-decoration: underline; }
+
+        /* 首页欢迎样式 */
+        .welcome-hero {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .welcome-hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 968px) {
+            #app { grid-template-columns: 1fr; }
+            aside { height: auto; position: relative; }
+            .media-container { grid-template-columns: 1fr; }
+        }
+
+        .install-link-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: #888;
+            font-size: 0.85rem;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .install-link-box:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .install-link-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .install-link-source {
+            color: #e07040;
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <nav class="top-return-nav">
+        <a href="index.html">主题馆</a>
+        <a href="2026-national.html">国家馆</a>
+        <a href="parallel.html">平行展</a>
+        <a href="critic.html" class="active">平行展详情</a>
+    </nav>
+    <aside>
+        <h1>BIENNALE 2026</h1>
+        
+        <div class="nav-group">
+            <a href="#home" class="nav-item active" onclick="switchPage('home')">首页厅 / Home</a>
+        </div>
+
+        <div class="nav-group">
+            <h3>Day 1 大运河两岸</h3>
+            <ul>
+                <li><a href="#ex-01" class="nav-item" onclick="switchPage('ex-01')">01. Helter Skelter</a></li>
+                <li><a href="#ex-02" class="nav-item" onclick="switchPage('ex-02')">02. Jenny Saville a Ca' Pesaro</a></li>
+                <li><a href="#ex-03" class="nav-item" onclick="switchPage('ex-03')">03. Strange Rules</a></li>
+                <li><a href="#ex-04" class="nav-item" onclick="switchPage('ex-04')">04. Unfinished</a></li>
+                <li><a href="#ex-05" class="nav-item" onclick="switchPage('ex-05')">05. Co-travellers</a></li>
+                <li><a href="#ex-06" class="nav-item" onclick="switchPage('ex-06')">06. The Promise of Change</a></li>
+                <li><a href="#ex-07" class="nav-item" onclick="switchPage('ex-07')">07. Third Person</a></li>
+                <li><a href="#ex-08" class="nav-item" onclick="switchPage('ex-08')">08. Algebra</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-group">
+            <h3>Day 2 圣马可核心话语场</h3>
+            <ul>
+                <li><a href="#ex-09" class="nav-item" onclick="switchPage('ex-09')">09. Lee Ufan</a></li>
+                <li><a href="#ex-10" class="nav-item" onclick="switchPage('ex-10')">10. Emballage / Cricotage</a></li>
+                <li><a href="#ex-11" class="nav-item" onclick="switchPage('ex-11')">11. Screen Melancholy</a></li>
+                <li><a href="#ex-12" class="nav-item" onclick="switchPage('ex-12')">12. Elegy continues</a></li>
+                <li><a href="#ex-13" class="nav-item" onclick="switchPage('ex-13')">13. Tide of Returns</a></li>
+                <li><a href="#ex-14" class="nav-item" onclick="switchPage('ex-14')">14. Transforming Energy</a></li>
+                <li><a href="#ex-15" class="nav-item" onclick="switchPage('ex-15')">15. RAGE BAIT</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-group">
+            <h3>Day 3 离岛灵性与档案</h3>
+            <ul>
+                <li><a href="#ex-16" class="nav-item" onclick="switchPage('ex-16')">16. Peggy Guggenheim in London</a></li>
+                <li><a href="#ex-17" class="nav-item" onclick="switchPage('ex-17')">17. The-exchange-value-of-language...</a></li>
+                <li><a href="#ex-18" class="nav-item" onclick="switchPage('ex-18')">18. Eroi d'Oro</a></li>
+                <li><a href="#ex-19" class="nav-item" onclick="switchPage('ex-19')">19. The Shape of Time</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <main id="main-content">
+        
+<section id="home" class="page active">
+    <div class="welcome-hero">
+        <h2>威尼斯双年展2026<br>平行展批判性研究文本空间</h2>
+        <p style="color: #888; max-width: 600px; font-size: 1.1rem;">请从左侧导航栏选择具体的展览项目。本框架涵盖19个核心平行展项，从图像政治、身体叙事、档案证词到制度记忆，逐日展开。2026年6月19–21日 · 威尼斯。</p>
+    </div>
+</section>
+
+<!-- ===== EX-01 ===== -->
+<section id="ex-01" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Helter Skelter</h1>
+        <div class="exhibition-title-cn">混乱螺旋</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Arthur Jafa, Richard Prince</span>
+            <span><strong>展馆:</strong> Fondazione Prada / Ca' Corner della Regina（普拉达基金会·女王之角宫）</span>
+            <span><strong>时间:</strong> 10:00 – 11:00 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+        <div class="media-container">
+        <div class="media-box"><img src="https://www.fondazioneprada.org/wp-content/uploads/1-fp_helter-skelter-958x640.jpg" alt="Helter Skelter Installation View"></div>
+        <div class="media-box"><a href="https://gagosian.com/news/museum-exhibitions/helter-skelter-arthur-jafa-and-richard-prince-fondazione-prada-venice/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Gagosian</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《混乱螺旋》（Helter Skelter）在普拉达基金会女王之角宫（Fondazione Prada / Ca' Corner della Regina）并置阿瑟·贾法（Arthur Jafa）与理查德·普林斯（Richard Prince）。据普拉达基金会官方页，该展以两位艺术家对美国大众图像、媒体循环和文化暴力的长期处理为核心，把电影、摄影、绘画与挪用图像放入同一制度空间中。</p>
+        <p>展览的题名带有明显的美国反文化与暴力记忆回声；在威尼斯语境中，它不是把美国图像当作异国样本，而是把图像工业如何制造种族、欲望、名人和消费神话的问题带入欧洲收藏制度内部。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>阿瑟·贾法（Arthur Jafa）是美国艺术家、电影摄影师与影像制作者，长期以影像、音乐和档案材料处理黑人民族经验、视觉愉悦与结构性暴力之间的关系。理查德·普林斯（Richard Prince）是美国艺术家，通常被置于后现代挪用艺术（appropriation art）谱系中，其摄影、绘画和再摄影作品持续检验广告、流行文化、男性神话与作者性之间的边界。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>这场展览的关键不在于"两个美国艺术家"的并列，而在于两种图像政治的互相照明。贾法的问题是：当黑人民族经验被流行音乐、电视、警察暴力录像和电影语言不断摄取时，图像是否仍可能保留哀悼、愤怒与尊严？普林斯的问题则更冷峻：当资本主义图像已经自带欲望模板，艺术家的挪用究竟是在暴露机制，还是继续消费那些机制？</p>
+            <p>两者相遇时，展览会产生一种不稳定的伦理张力。贾法的档案强度要求观众承认图像背后的生命政治；普林斯的挪用策略则不断把图像推回商品、笑话和姿态。若观看得太快，展览可能被误读为"酷"的美国视觉拼贴；若放慢速度，它更像一场关于观看责任的测试：我们是否还能区分见证、占有、复制和娱乐？</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">作为开篇展览，先建立三日行程的图像政治基调；重点看图像如何从媒体档案转化为制度批判。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">ACTV 水上巴士 Line 1 至 San Stae，步行约 3–5 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">图像政治</span><span class="tag">媒体档案</span><span class="tag">制度批判</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源；核心论述以机构、出版物与艺术家档案为主。</p>
+        <ol class="source-list">
+            <li><a href="https://www.fondazioneprada.org/project/helter-skelter-arthur-jafa-richard-prince/?lang=en" target="_blank" rel="noopener noreferrer">Fondazione Prada, Helter Skelter: Arthur Jafa and Richard Prince</a> · official exhibition page</li>
+            <li><a href="https://gagosian.com/quarterly/2026/04/23/interview-helter-skelter-arthur-jafa-and-richard-prince/" target="_blank" rel="noopener noreferrer">Gagosian Quarterly, Helter Skelter: Arthur Jafa and Richard Prince</a> · artist interview / gallery publication</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-02 ===== -->
+<section id="ex-02" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Jenny Saville a Ca' Pesaro</h1>
+        <div class="exhibition-title-cn">珍妮·萨维尔在佩萨罗宫</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Jenny Saville</span>
+            <span><strong>展馆:</strong> Ca' Pesaro（佩萨罗宫）</span>
+            <span><strong>时间:</strong> 11:05 – 12:10 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+        <div class="media-container">
+        <div class="media-box"><img src="https://gagosian.com/media/images/gallery/news/2026/jTZL5AjgBjEP_1200x1200.jpg" alt="Jenny Saville Installation View"></div>
+        <div class="media-box"><a href="https://capesaro.visitmuve.it/en/exhibition/jenny-saville/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Ca' Pesaro (Official)</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《珍妮·萨维尔在佩萨罗宫》（Jenny Saville a Ca' Pesaro）把珍妮·萨维尔（Jenny Saville）的绘画带入佩萨罗宫（Ca' Pesaro）的现代艺术收藏语境。据佩萨罗宫官方页面，展览把萨维尔的大尺幅身体绘画与博物馆空间中的历史绘画传统并置，强调身体、颜料、尺度和观看距离之间的冲突。</p>
+        <p>在威尼斯，萨维尔并不只是"重返具象绘画"的个案；她的身体图像与城市中长久存在的肉身、殉难、肖像和女性身体观看史发生直接摩擦。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>珍妮·萨维尔（Jenny Saville）是英国画家，常被置于1990年代以来英国当代绘画复兴与"青年英国艺术家"（Young British Artists）之后的讨论中。她以巨大画幅、厚重颜料、解剖学结构和变形身体著称，长期挑战西方绘画中对女性身体的理想化与可消费化。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>萨维尔的力量来自一种反优雅的绘画伦理。她不是把身体当作身份政治的说明图，而是让身体以过量、肿胀、伤痕、肉色和颜料堆积的方式抵抗被一眼读懂。佩萨罗宫的历史环境会强化这种抵抗：当她的身体图像进入威尼斯绘画传统，观众看到的不只是"女性身体"，而是绘画自身如何长期参与欲望、权力和医学化凝视的建构。</p>
+            <p>风险也在这里。萨维尔的尺度和技法容易被浪漫化为"强大的绘画性"，从而中和她对身体政治的尖锐处理。专业观看应当追问：这些肉身是否真正逃离了物化，还是以更壮观的方式重新进入艺术市场对创伤与肉体的需求？</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">紧接 Arthur Jafa 与 Richard Prince 之后观看，可把图像批判从媒体转向绘画身体。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Fondazione Prada 步行约 5–7 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">肉身</span><span class="tag">绘画尺度</span><span class="tag">女性身体</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://capesaro.visitmuve.it/en/exhibition/jenny-saville/" target="_blank" rel="noopener noreferrer">Ca' Pesaro, Exhibition: Jenny Saville a Ca' Pesaro</a> · official museum page</li>
+            <li><a href="https://gagosian.com/artists/jenny-saville/" target="_blank" rel="noopener noreferrer">Gagosian, Jenny Saville</a> · gallery artist profile</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-03 ===== -->
+<section id="ex-03" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Strange Rules</h1>
+        <div class="exhibition-title-cn">奇异规则</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Holly Herndon &amp; Mat Dryhurst</span>
+            <span><strong>展馆:</strong> Palazzo Diedo（迪耶多宫）</span>
+            <span><strong>时间:</strong> 12:30 – 13:20 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://berggruenarts.org/media/yootheme/cache/d8/STRANGE%20RULES_SUB%20GLOBAL%20CStefanoMattea-5-d8a0268b.webp" alt="Strange Rules Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://ocula.com/magazine/conversations/holly-herndon-mat-dryhurst-venice-ai/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Ocula</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《奇异规则》（Strange Rules）是霍莉·赫恩登（Holly Herndon）与马特·德赖赫斯特（Mat Dryhurst）在迪耶多宫（Palazzo Diedo）的项目。据迪耶多宫/贝格鲁恩艺术与文化（Berggruen Arts &amp; Culture）官方页面，展览围绕人工智能（artificial intelligence）、声音、合成媒介和参与式系统展开。</p>
+        <p>这不是把AI当作新奇工具的展览，而是把"规则"本身变成问题：谁训练系统，谁被系统采样，谁有权决定声音、图像和身份的再生成方式？</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>霍莉·赫恩登（Holly Herndon）是美国作曲家、声音艺术家与研究者，长期以人声、机器学习和网络化表演为媒介。马特·德赖赫斯特（Mat Dryhurst）是艺术家、研究者与技术批评者，经常与赫恩登合作，讨论生成式系统、协议、知识产权和集体数据治理。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>《奇异规则》（Strange Rules）的重要性在于它把AI从"工具美学"推回"社会协议"。当合成声音可以模拟、延展甚至替代人的声纹，作品真正处理的不是技术能否逼真，而是主体性如何被训练集、平台和许可制度重新划分。声音在这里不是纯粹的感官材料，而是权利、同意和劳动的痕迹。</p>
+            <p>迪耶多宫的历史建筑会让这种未来技术显得更不稳定：古老宫殿不是背景，而是制度连续性的提示。过去的艺术制度通过赞助、收藏和建筑安排可见性；今天的算法制度通过数据、模型和接口安排可说性。观看重点应放在这种连续性上，而不是停留于"AI艺术是否像艺术"的旧问题。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">在古老宫殿中观察声音与算法如何制造新的中介空间。重点不是技术奇观，而是观看主体如何被系统重新分配。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Ca' Pesaro 步行至 Palazzo Diedo，约 18–22 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">AI声音</span><span class="tag">机器学习</span><span class="tag">合成主体</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://palazzodiedo.com/en/exhibitions/current-exhibitions-palazzo-diedo/current-exhibitions-palazzo-diedo-strange-rules" target="_blank" rel="noopener noreferrer">Palazzo Diedo, Strange Rules</a> · official exhibition page</li>
+            <li><a href="https://www.coeval-magazine.com/coeval/strange-rules-mat-dryhurst-and-holly-herndon-at-palazzo-diedo-venice" target="_blank" rel="noopener noreferrer">COEVAL Magazine, Strange Rules at Palazzo Diedo</a> · English art-media feature</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-04 ===== -->
+<section id="ex-04" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Unfinished</h1>
+        <div class="exhibition-title-cn">未完成</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Ceal Floyer</span>
+            <span><strong>展馆:</strong> Palazzo Diedo（迪耶多宫）</span>
+            <span><strong>时间:</strong> 12:30 – 13:20 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://berggruenarts.org/media/yootheme/cache/ef/20260503_JPorcelJPS_85775-Pano-efcb3509.webp" alt="Unfinished - Ceal Floyer Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://berggruenarts.org/en/exhibitions/current-exhibitions-palazzo-diedo/current-exhibitions-palazzo-diedo-unfinished-ceal-floyer" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Berggruen Arts</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《未完成》（Unfinished）是西尔·弗洛耶（Ceal Floyer）在迪耶多宫（Palazzo Diedo）的个展。据贝格鲁恩艺术与文化（Berggruen Arts &amp; Culture）官方页面，展览延续弗洛耶以极少材料、语言错位、日常动作和观念性幽默制造感知偏差的实践。</p>
+        <p>"未完成"在这里不只是作品状态，而是一种方法：作品把观众带到意义尚未闭合的边缘，让观看、阅读和推理过程本身成为现场。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>西尔·弗洛耶（Ceal Floyer）出生于巴基斯坦卡拉奇（Karachi），在英国接受艺术教育，后长期在柏林（Berlin）工作。她的实践通常被归入观念艺术（conceptual art）与极少主义之后的谱系，善于以灯光、文本、声音、投影和日常物件制造精确而轻微的意义偏移。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>弗洛耶的作品常常小到几乎像一个语法错误，却正因如此迫使观众意识到自己如何自动补全意义。《未完成》（Unfinished）的批判性不在宏大叙事，而在一种低声量的拆解：艺术对象并不稳定，语言也不透明，日常动作更不是中性的。她把"少"变成一种认识论压力。</p>
+            <p>与同馆的AI项目相比，弗洛耶显得反技术、反奇观，但二者共享一个问题：主体并非先于系统存在，而是在规则、暗示和反馈中被生成。她的作品提醒我们，控制不一定来自复杂算法；一个标题、一个灯泡、一个缺席动作，也足以重新组织观看者的判断。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">与AI声音展并置观看：一个依赖计算系统，一个依赖最小动作。两者都在削弱传统艺术对象的稳定边界。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">同馆观看，无需移动。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">极少主义</span><span class="tag">语言</span><span class="tag">观念艺术</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://berggruenarts.org/en/exhibitions/current-exhibitions-palazzo-diedo/current-exhibitions-palazzo-diedo-unfinished-ceal-floyer" target="_blank" rel="noopener noreferrer">Berggruen Arts &amp; Culture, Unfinished, Ceal Floyer</a> · official exhibition page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-05 ===== -->
+<section id="ex-05" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Co-travellers</h1>
+        <div class="exhibition-title-cn">同行者</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Amar Kanwar</span>
+            <span><strong>展馆:</strong> Palazzo Grassi（格拉西宫）</span>
+            <span><strong>时间:</strong> 14:30 – 16:00 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://www.pinaultcollection.com/palazzograssi/media/styles/big/s3/expo/img/screenshot-2026-04-02-alle-10.50.30.png?itok=WODhjgpr" alt="Co-travellers Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.pinaultcollection.com/palazzograssi/en/amar-kanwar-co-travellers" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Pinault Collection</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《同行者》（Co-travellers）是阿马尔·坎瓦尔（Amar Kanwar）在格拉西宫（Palazzo Grassi）的展览。据皮诺收藏（Pinault Collection）官方页面，该展以坎瓦尔长期发展的影像、文本、档案与装置实践为核心，处理暴力、生态、土地、司法和证词之间的关系。</p>
+        <p>题名中的"同行者"提示一种非英雄式政治：艺术家不是替他人发言，而是在旅行、聆听和证词收集中建立脆弱的共同见证结构。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>阿马尔·坎瓦尔（Amar Kanwar）是印度新德里（New Delhi）艺术家，主要以电影、影像装置、文本和档案形式工作。他的作品长期关注南亚政治暴力、环境冲突、土地权利、司法失败以及个体证词如何抵抗官方叙事。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>坎瓦尔的影像实践拒绝新闻报道式的结论速度。他把政治事件拆成声音、风景、证词、植物、文件和沉默，使暴力不再只是"发生过的事实"，而成为持续塑造土地与身体的时间结构。《同行者》（Co-travellers）因此特别适合在格拉西宫观看：收藏机构的稳定墙面与作品中的不稳定证词互相抵触。</p>
+            <p>这类作品的伦理挑战在于，慢速影像和诗性文本可能被艺术系统转换为高雅的苦难美学。观看时应警惕这种转换，同时也承认坎瓦尔的价值正在于他没有把证词压缩成口号。他让政治性发生在持续聆听之中，而不是发生在立场宣告的一瞬间。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">午后进入 Pinault Collection 体系，先看 Kanwar 的影像叙事，把政治问题从新闻事件转入时间、证词与记忆。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Rialto 或 Ca' d'Oro 坐 Line 2 至 San Samuele，步行入馆。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">影像叙事</span><span class="tag">证词</span><span class="tag">生态政治</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.pinaultcollection.com/palazzograssi/en/amar-kanwar-co-travellers" target="_blank" rel="noopener noreferrer">Pinault Collection, Amar Kanwar. Co-travellers</a> · official exhibition page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-06 ===== -->
+<section id="ex-06" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">The Promise of Change</h1>
+        <div class="exhibition-title-cn">改变的承诺</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Michael Armitage</span>
+            <span><strong>展馆:</strong> Palazzo Grassi（格拉西宫）</span>
+            <span><strong>时间:</strong> 14:30 – 16:00 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://www.pinaultcollection.com/palazzograssi/media/styles/big/s3/expo/img/iv_michaelarmitage_8-copia_3.jpg?itok=ygkvQlHM" alt="The Promise of Change Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.davidzwirner.com/news/2025/michael-armitage-solo-exhibition-at-palazzo-grassi" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">David Zwirner</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《改变的承诺》（The Promise of Change）是迈克尔·阿米蒂奇（Michael Armitage）在格拉西宫（Palazzo Grassi）的展览。据皮诺收藏（Pinault Collection）官方页面，展览呈现阿米蒂奇以绘画处理东非社会现实、新闻图像、神话结构和艺术史引用的实践。</p>
+        <p>阿米蒂奇常在卢巴戈树皮布（lubugo bark cloth）上作画，这一材料使图像不只是再现政治事件，也把地方性、手工劳动和殖民后经济关系带入画面肌理。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>迈克尔·阿米蒂奇（Michael Armitage）出生于肯尼亚内罗毕（Nairobi），在伦敦（London）接受艺术教育并往返于东非与欧洲工作。他的绘画吸收欧洲绘画传统、东非政治现实和流行图像资源，常以寓言化场景处理公共暴力、性别关系、生态压力和社会变动。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>阿米蒂奇的绘画最有力之处，是它不把后殖民政治简化为图像主题。他借用新闻照片、神话场景和艺术史构图，却让这些来源在卢巴戈树皮布的表面上变得不稳定：图像像是历史传闻、公共梦境和政治谣言的混合体。《改变的承诺》（The Promise of Change）这个题名因此带有反讽性，改变既是希望，也是不断被权力消费的口号。</p>
+            <p>与坎瓦尔并看，阿米蒂奇更接近寓言而非证词。他的危险在于绘画的美感可能掩盖暴力的具体性；他的价值也在于，绘画允许事件脱离即时新闻，进入更长的历史和神话时间。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">与 Amar Kanwar 连续观看，比较影像证词与绘画寓言如何处理暴力和公共事件。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">同馆观看，无需移动。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">后殖民图像</span><span class="tag">神话结构</span><span class="tag">绘画寓言</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.pinaultcollection.com/palazzograssi/en/michael-armitage-promise-change" target="_blank" rel="noopener noreferrer">Pinault Collection, Michael Armitage. The Promise of Change</a> · official exhibition page</li>
+            <li><a href="https://www.whitecube.com/news/michael-armitage-at-palazzo-grassi" target="_blank" rel="noopener noreferrer">White Cube, Michael Armitage at Palazzo Grassi</a> · gallery news</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-07 ===== -->
+<section id="ex-07" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Third Person</h1>
+        <div class="exhibition-title-cn">第三人称</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Lorna Simpson</span>
+            <span><strong>展馆:</strong> Punta della Dogana（海关大楼）</span>
+            <span><strong>时间:</strong> 16:15 – 17:30 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://www.juliet-artmagazine.com/wp-content/uploads/2026/05/iv_lornasimpson_44-740x552.jpeg" alt="Third Person Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.juliet-artmagazine.com/en/third-person-lorna-simpsons-polyphonic-art-at-punta-della-dogana-venice/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Juliet Art Magazine</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《第三人称》（Third Person）是洛娜·辛普森（Lorna Simpson）在海关大楼（Punta della Dogana）的展览。据皮诺收藏（Pinault Collection）官方页面，展览呈现辛普森跨摄影、拼贴、绘画和影像的实践，聚焦身份、记忆、非裔女性经验与档案图像。</p>
+        <p>"第三人称"暗示一种叙事距离：主体不再被迫以自白形式证明自身，而是通过缺席、遮蔽、背影、文本碎片和档案重组来反击凝视。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>洛娜·辛普森（Lorna Simpson）是美国艺术家，1980年代以来以摄影与文本作品进入当代艺术史核心讨论。她长期处理种族、性别、身体、语言和观看权力之间的关系，近年也通过绘画、拼贴和影像继续扩展档案图像的政治潜能。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>辛普森的"第三人称"不是冷漠，而是一种拒绝被盘问的策略。她常常让人物转身、局部化或被文本打断，使观看者无法顺利占有一个完整身份。这样的形式策略对非裔女性经验尤其关键：主体不是通过更多可见性获得自由，因为可见性本身也可能是控制机制。</p>
+            <p>在海关大楼这一前贸易与税收空间中，辛普森的档案方法会获得额外重量。这里曾管理商品流通，而她管理的是图像流通中的身份价格。展览值得关注的不是"她表现了什么身份"，而是她如何让身份从可消费的图像对象变成抵抗解释的复杂场。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">从 Palazzo Grassi 步行过学院桥进入海关大楼，重点看她如何把身体从直接叙述中抽离。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Palazzo Grassi 步行，经 Accademia Bridge（学院桥），约 18–22 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">身份</span><span class="tag">影像档案</span><span class="tag">第三人称叙事</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.pinaultcollection.com/palazzograssi/en/lorna-simpson-third-person" target="_blank" rel="noopener noreferrer">Pinault Collection, Lorna Simpson. Third Person</a> · official exhibition page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-08 ===== -->
+<section id="ex-08" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Algebra</h1>
+        <div class="exhibition-title-cn">代数</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Paulo Nazareth</span>
+            <span><strong>展馆:</strong> Punta della Dogana（海关大楼）</span>
+            <span><strong>时间:</strong> 16:15 – 17:30 (Day 1 · 6月19日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://www.domusweb.it/content/dam/domusweb/en/art/gallery/2026/03/27/un-artista-ha-rotto-larchitettura-di-tadao-ando-a-punta-della-dogana/domus-nazareth-gallery-7.jpg.foto.rmedium.jpg" alt="Algebra Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.domusweb.it/en/art/gallery/2026/03/27/tadao-ando-punta-della-dogana-venice-paulo-nazareth-exhibition.html" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Domus</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《代数》（Algebra）是保罗·纳扎雷斯（Paulo Nazareth）在海关大楼（Punta della Dogana）的展览。据皮诺收藏（Pinault Collection）官方页面，展览呈现纳扎雷斯以行走、照片、录像、物件、文字和表演处理迁徙、殖民地理、种族分类与拉丁美洲历史的实践。</p>
+        <p>这里的"代数"不是数学隐喻的装饰，而是关于历史变量的计算：身体、道路、边界、商品、肤色和语言如何被殖民现代性放入同一方程。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>保罗·纳扎雷斯（Paulo Nazareth）是巴西艺术家，常以长途行走、临时行动、摄影、录像和档案化物件进行创作。他的实践把个人身体置于美洲、非洲和欧洲之间的殖民交通线中，追问种族、劳工、土地和迁徙的历史债务。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>纳扎雷斯的作品不把旅行变成浪漫经验，而把行走变成一种反制地图的身体方法。他通过脚、路、尘土、市场物件和简短文字，把抽象的殖民历史重新拖回身体尺度。《代数》（Algebra）之所以适合与辛普森并置，是因为两者都拒绝身份的直接陈述：一个通过档案遮蔽，另一个通过地理行动。</p>
+            <p>在海关大楼中观看纳扎雷斯，必须意识到场馆本身与商品、税收和帝国流通有关。作品中的迁徙身体不是自由移动的当代主体，而是被历史债务、边境制度和视觉分类持续计算的身体。它的批判力来自笨拙、低成本和反纪念碑性。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">与 Lorna Simpson 并置观看：一个处理档案中的身份，一个处理地理中的身体。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">同馆观看，无需移动。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">殖民制图</span><span class="tag">身体行动</span><span class="tag">地理政治</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.pinaultcollection.com/palazzograssi/en/paulo-nazareth-algebra" target="_blank" rel="noopener noreferrer">Pinault Collection, Paulo Nazareth. Algebra</a> · official exhibition page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-09 ===== -->
+<section id="ex-09" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Lee Ufan</h1>
+        <div class="exhibition-title-cn">李禹焕</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Lee Ufan（李禹焕）</span>
+            <span><strong>展馆:</strong> Procuratie Vecchie（旧行政官邸）</span>
+            <span><strong>时间:</strong> 09:30 – 11:00 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://media.smacvenice.org/uploads/2026/03/copy-of-7_lee-ufan_relatum-formerly-iron-field-1969-2019-1800x.jpg" alt="Lee Ufan Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.pacegallery.com/journal/lee-ufan-in-venice-2026/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Pace Gallery</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《李禹焕》（Lee Ufan）在旧行政官邸（Procuratie Vecchie）展开。据佩斯画廊（Pace Gallery）与合作票务页面资料，该项目围绕石、钢板、绘画笔触、空白与场域关系展开。</p>
+        <p>对李禹焕而言，作品不是孤立对象，而是物、空间、时间和观看者相遇的关系。把这种实践放在圣马可广场边缘，会使"场域"从美学概念转化为城市制度经验。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>李禹焕（Lee Ufan）出生于韩国，后长期在日本与欧洲工作，是物派（Mono-ha）与战后东亚当代艺术的重要人物。他的雕塑和绘画以石头、钢板、简化笔触和留白组织物与物、物与空间、行动与感知之间的关系。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>李禹焕的作品常被描述为沉静，但这种沉静并不等于退隐。石头与钢板的相遇把工业现代性和自然物质放在同一张力场中；绘画中的笔触与空白则把"作者行为"降到最低，让空间本身开始发声。圣马可广场附近的权力空间会强化这种关系美学：物不是陈列品，而是对建筑秩序和观看节奏的干预。</p>
+            <p>专业观看应避免把李禹焕简化成东方禅意。更准确的入口是现象学（phenomenology）与战后现代性批判：作品通过最少的物质关系，让观众意识到感知从来不是纯粹私人的，它被建筑、制度、身体距离和历史材料共同塑造。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">取消 Marciana 后，上午直接进入圣马可广场北侧，以物质存在和空间感知作为 Day 2 的开端。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">坐水上巴士至 San Marco Vallaresso 或 San Marco-San Zaccaria，步行入场。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">现象学</span><span class="tag">物与场域</span><span class="tag">物质存在</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.pacegallery.com/journal/lee-ufan-in-venice-2026/" target="_blank" rel="noopener noreferrer">Pace Gallery, Lee Ufan in Venice 2026</a> · gallery journal / exhibition note</li>
+            <li><a href="https://www.coopculture.it/en/events/event/the-quantum-effect/" target="_blank" rel="noopener noreferrer">CoopCulture, Lee Ufan / The Quantum Effect</a> · ticketing / event page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-10 ===== -->
+<section id="ex-10" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Emballage, Cricotage and Madame Jarema</h1>
+        <div class="exhibition-title-cn">包装 / Cricotage 与雅雷玛夫人</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Tadeusz Kantor</span>
+            <span><strong>展馆:</strong> Procuratie Vecchie（旧行政官邸）</span>
+            <span><strong>时间:</strong> 09:30 – 11:00 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://niezlasztuka.net/wp-content/uploads/2026/05/DSC08325-1200x800.jpg?v=1778406954" alt="Kantor Exhibition Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.labiennale.org/en/art/2026/tadeusz-kantor-1915-1990-emballage-cricotage-and-madame-jarema" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">La Biennale di Venezia</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《包装 / Cricotage 与雅雷玛夫人》（Emballage, Cricotage and Madame Jarema）是关于塔德乌什·康托尔（Tadeusz Kantor）的展览，获列入第61届威尼斯双年展（Biennale Arte 2026）平行项目资料。据威尼斯双年展（La Biennale di Venezia）官方页面，展览围绕康托尔的包装（emballage）、行动/戏剧事件（cricotage）以及玛丽亚·雅雷玛（Maria Jarema）的历史关联展开。</p>
+        <p>展览把波兰二十世纪前卫艺术、剧场、战争创伤和物件政治带入旧行政官邸（Procuratie Vecchie）的空间。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>塔德乌什·康托尔（Tadeusz Kantor, 1915–1990）是波兰艺术家、导演、舞台设计师和理论家，以贫穷剧场、物件剧场、Cricot 2剧团（Cricot 2）以及对记忆、死亡和历史残片的处理著称。玛丽亚·雅雷玛（Maria Jarema）是波兰前卫艺术家，与战后波兰现代主义和剧场实验密切相关。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>康托尔的"包装"从来不是形式游戏，而是二十世纪历史压力下的物件政治：被包裹的物既被保护，也被遮蔽；既像档案，也像尸体；既等待开启，也拒绝被完整解释。《包装 / Cricotage 与雅雷玛夫人》因此把展览空间变成一个残片剧场。</p>
+            <p>与同楼的李禹焕相比，康托尔不是把物降到沉默，而是让物携带无法消化的历史噪音。观看重点应放在物件、舞台动作和政治记忆之间的关系：前卫形式并不天然自由，它总是在战争、审查、流亡和制度化之后重新获得意义。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">与 Lee Ufan 形成双击：一个把物压到最少，一个把历史残片推向戏剧行动。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">同楼观看，无需移动。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">前卫戏剧</span><span class="tag">贫穷剧场</span><span class="tag">历史残片</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.labiennale.org/en/art/2026/collateral-events/tadeusz-kantor-1915-1990-emballage-cricotage-and-madame-jarema" target="_blank" rel="noopener noreferrer">La Biennale di Venezia, Tadeusz Kantor (1915-1990). Emballage, Cricotage and Madame Jarema</a> · official collateral event page</li>
+            <li><a href="https://starakfoundation.org/en/spectra/news/tadeusz_kantor_1915_1990_emballage_cricotage_and_madame_jarema0c0c76e1" target="_blank" rel="noopener noreferrer">Starak Foundation, Tadeusz Kantor (1915-1990)</a> · foundation page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-11 ===== -->
+<section id="ex-11" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Screen Melancholy</h1>
+        <div class="exhibition-title-cn">屏幕忧郁</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Li Yi-Fan（李亦凡）</span>
+            <span><strong>展馆:</strong> Palazzo delle Prigioni（普里奇奥尼宫）</span>
+            <span><strong>时间:</strong> 11:10 – 12:00 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://files.ocula.com/rf/f1/f1d41f02-2e1d-4ab5-81b8-9a71e87b2981/05li-yi-fan-screen-melancholy-screenshot-2026-60-min-li-yi-fan.jpg" alt="Screen Melancholy Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.tfam.museum/Exhibition/Exhibition_Special.aspx?id=805&ddlLang=en-us" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Taipei Fine Arts Museum</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《屏幕忧郁》（Screen Melancholy: Li Yi-Fan）是李亦凡（Li Yi-Fan）在普里奇奥尼宫（Palazzo delle Prigioni）的项目，并见于威尼斯双年展平行项目资料与台湾威尼斯项目网站。展览以游戏引擎、虚拟空间和屏幕叙事处理数字时代的异化、控制和情感剩余。</p>
+        <p>场馆本身曾是监狱空间，这使屏幕不再只是技术界面，而成为幽闭、规训和观看权力的延伸。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>李亦凡（Li Yi-Fan）是台湾艺术家，实践涉及动画、游戏引擎、影像、声音和沉浸式装置。他关注数字环境中的主体形成、虚拟劳动、反乌托邦叙事和技术系统对感知的塑造。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>《屏幕忧郁》（Screen Melancholy）的有效之处，在于它把游戏引擎从娱乐工业中抽离出来，转化为一种存在论装置。虚拟空间并不只是逃离现实的通道，而是现实压力的再建模：孤独、重复、监控、任务逻辑和不可退出的界面构成新的心理建筑。</p>
+            <p>普里奇奥尼宫的监狱历史让作品获得强烈的空间对应。过去的监禁依赖墙、门和锁；今天的规训也可能依赖屏幕、账号、任务和反馈循环。展览的关键问题不是数字图像是否沉浸，而是沉浸本身如何把观众训练成顺从的操作主体。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">从圣马可权力广场转入古老监狱，观看数字拟像如何和历史幽闭空间发生压迫性叠合。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Procuratie Vecchie 步行约 8–10 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">游戏引擎</span><span class="tag">虚拟异化</span><span class="tag">监狱空间</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.labiennale.org/it/arte/2026/eventi-collaterali/screen-melancholy-li-yi-fan" target="_blank" rel="noopener noreferrer">La Biennale di Venezia, Screen Melancholy: Li Yi-Fan</a> · official collateral event page</li>
+            <li><a href="https://www.taiwaninvenice.org/2026/index.php/content/20260331" target="_blank" rel="noopener noreferrer">Taiwan in Venice 2026, Screen Melancholy: Li Yi-Fan</a> · official project website</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-12 ===== -->
+<section id="ex-12" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Elegy continues</h1>
+        <div class="exhibition-title-cn">挽歌继续</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Gabrielle Goliath</span>
+            <span><strong>展馆:</strong> Chiesa di Sant'Antonin（圣安东宁教堂）</span>
+            <span><strong>时间:</strong> 12:10 – 13:00 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://storage.ghost.io/c/51/f8/51f871d8-b6be-4a73-b958-0ca4fff0110a/content/images/size/w1200/2026/05/gg1.jpg" alt="Elegy continues Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://hyperallergic.com/gabrielle-goliath-sounds-a-call-to-action-in-venice/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Hyperallergic</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《挽歌继续》（Elegy continues）延续加布里埃尔·戈利亚特（Gabrielle Goliath）的《挽歌》（Elegy）系列，并在圣安东宁教堂（Chiesa di Sant'Antonin）语境中展开。据卡梅尔·拉扎尔基金会（Kamel Lazaar Foundation）页面与英文艺术媒体报道，该项目与戈利亚特原南非馆项目被取消后的独立呈现有关。</p>
+        <p>作品以声音、持续时间、缺席和非语言哀悼处理女性生命、种族化暴力与审查问题。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>加布里埃尔·戈利亚特（Gabrielle Goliath）是南非艺术家，长期以声音、表演、影像和装置处理性别暴力、哀悼、见证与修复性正义。她的《挽歌》（Elegy）系列以声乐和持续演出形式纪念遭受暴力的女性与酷儿生命。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>戈利亚特的作品拒绝把暴力转化为可消费的图像。她用声音、停顿和持续时间制造一种不能被快速观看完成的哀悼结构。教堂空间会放大这种伦理：声音在建筑中回荡，缺席者通过不可见的方式占据现场。</p>
+            <p>这个项目还带有制度政治的尖锐性。若展览确实与南非馆取消争议相连，那么"继续"并不只是艺术形式的延续，更是对文化外交、审查和国家代表机制的回应。它提醒观众：艺术中的哀悼不是柔弱姿态，而可能是对沉默制度最坚硬的抵抗。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">从监狱空间步行进入教堂空间，重点看持续的声音如何替代宣言式政治表达。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Palazzo delle Prigioni 步行约 8–10 分钟。<br>注：本场馆观展后，安排有 13:00 – 14:05 的城堡区午餐与休息时段。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">哀悼政治</span><span class="tag">非语言见证</span><span class="tag">持续的声音</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.kamellazaarfoundation.org/gabrielle-goliath-elegy-venice" target="_blank" rel="noopener noreferrer">Kamel Lazaar Foundation, Gabrielle Goliath: Elegy in Venice</a> · foundation project page</li>
+            <li><a href="https://artreview.com/cancelled-gabrielle-goliath-venice-biennale-pavilion-to-show-outside-of-main-exhibition/" target="_blank" rel="noopener noreferrer">ArtReview, Cancelled Gabrielle Goliath pavilion to show outside of Venice Biennale</a> · English art-media report</li>
+            <li><a href="https://www.gabriellegoliath.com/elegy-three-suites" target="_blank" rel="noopener noreferrer">Gabrielle Goliath, Elegy / Personal Accounts</a> · artist website</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-13 ===== -->
+<section id="ex-13" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Tide of Returns</h1>
+        <div class="exhibition-title-cn">归返之潮</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Repatriates Collective（返乡者共同体）</span>
+            <span><strong>展馆:</strong> Ocean Space / Chiesa di San Lorenzo（海洋空间·圣洛伦佐教堂）</span>
+            <span><strong>时间:</strong> 14:10 – 15:30 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://tba21.org/items/uploads/images/1774867115_ktS3QALq72tJ.jpg" alt="Tide of Returns Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://tba21.org/tideofreturns" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">TBA21</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《归返之潮》（Tide of Returns）由返乡者共同体（Repatriates Collective）在海洋空间（Ocean Space / Chiesa di San Lorenzo）呈现。据归还议题平台RM*[restitution matters]与Repatriates项目页面，展览围绕归还（restitution）、海洋通道、殖民档案、生态损伤和文化物的再流动展开。</p>
+        <p>海洋空间的场址使"归还"不只是博物馆法律问题，而成为关于航线、贸易、死亡、迁徙和环境记忆的空间问题。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>返乡者共同体（Repatriates Collective）不是单一艺术家，而是围绕归还、殖民遗产和文化物再定位展开合作的实践共同体。其工作强调档案研究、公共教育、跨地域协作和被掠夺物/祖先遗存回归问题。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>《归返之潮》（Tide of Returns）把归还从"物回到哪里"的行政问题扩展为"世界如何被重新连接"的政治问题。海洋在这里不是浪漫背景，而是殖民运输、奴役贸易、资源开采和当代生态危机的共同媒介。题名中的潮汐暗示归还并非一次性事件，而是反复到来的历史债务。</p>
+            <p>这类展览最容易落入道德正确的表述，但它真正的难度在于制度实践：谁拥有解释权？谁承担修复成本？归还是否会被大型展览系统转化为新的文化资本？专业观看应把注意力放在展览如何组织档案、声音、物件和空间关系，而不只是同意其政治立场。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">午餐后继续留在 Castello 区，把哀悼政治转向返还政治和海洋空间中的制度记忆。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Chiesa di Sant'Antonin 步行约 5–8 分钟。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">归还政治</span><span class="tag">海洋空间</span><span class="tag">制度记忆</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://restitutionmatters.org/event/tide-of-returns-exhibition/" target="_blank" rel="noopener noreferrer">RM*[restitution matters], Tide of Returns</a> · project page</li>
+            <li><a href="https://repatriates.org/calendar/tide-of-returns-venice-biennale/" target="_blank" rel="noopener noreferrer">Repatriates, Tide of Returns | Venice Biennale</a> · project calendar page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-14 ===== -->
+<section id="ex-14" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Transforming Energy</h1>
+        <div class="exhibition-title-cn">转化能量</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Marina Abramović</span>
+            <span><strong>展馆:</strong> Gallerie dell'Accademia（学院美术馆）</span>
+            <span><strong>时间:</strong> 16:00 – 18:30 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://www.gallerieaccademia.it/sites/default/files/inline-images/_DSC9313%20copia.jpeg" alt="Transforming Energy Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.lissongallery.com/exhibitions/venice-2026/artwork/venice-2026-marina-abramovic-at-gallerie-dell-accademia-di-venezia" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Lisson Gallery</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《转化能量》（Transforming Energy）是玛丽娜·阿布拉莫维奇（Marina Abramović）在学院美术馆（Gallerie dell'Accademia）的展览。据学院美术馆官方页面，展览把阿布拉莫维奇关于身体、能量、精神实践和观众参与的长期研究带入威尼斯古典绘画收藏的建筑秩序中。</p>
+        <p>这使行为艺术（performance art）不再只是短暂事件，而被置入美术馆、圣像传统和历史绘画的观看制度中。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>玛丽娜·阿布拉莫维奇（Marina Abramović）出生于贝尔格莱德（Belgrade），是行为艺术史中最具影响力的艺术家之一。自1970年代以来，她以身体极限、时间持续、痛感、凝视、观众参与和精神训练为核心，持续扩展表演、仪式和美术馆制度之间的边界。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>阿布拉莫维奇的晚期问题不再只是身体能承受什么，而是身体如何被制度化为一种可传授、可展览、可消费的能量系统。《转化能量》（Transforming Energy）在学院美术馆中尤其复杂：古典绘画空间强调可见形象和历史权威，而阿布拉莫维奇强调经验、气场、持续和参与。二者相遇，会让"在场"本身成为历史问题。</p>
+            <p>风险在于，精神性和能量语言容易滑向新纪元式消费，削弱早期行为艺术的危险性。但如果展览能够让观众意识到身体训练、凝视伦理和制度空间之间的权力关系，它就不只是大师回顾，而是一次关于表演艺术如何进入博物馆历史的再谈判。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">作为 Day 2 的重量级收束，预留完整时段；重点看行为艺术的身体系统如何进入威尼斯古典绘画谱系。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 San Marco-San Zaccaria 或 Vallaresso 坐 Line 1 至 Accademia。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">身体系统</span><span class="tag">行为艺术</span><span class="tag">古典绘画谱系</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.gallerieaccademia.it/en/exhibition-transforming-energy-di-marina-abramovic-gallerie-dellaccademia-di-venezia" target="_blank" rel="noopener noreferrer">Gallerie dell'Accademia, Transforming Energy di Marina Abramović</a> · official museum page</li>
+            <li><a href="https://www.domusweb.it/en/news/2026/04/28/abramovic-venice-biennale-2026-gallerie-accademia.html" target="_blank" rel="noopener noreferrer">Domus, Marina Abramović at Gallerie dell'Accademia</a> · English design/art media report</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-15 ===== -->
+<section id="ex-15" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">RAGE BAIT</h1>
+        <div class="exhibition-title-cn">愤怒诱饵</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Eva &amp; Franco Mattes（伊娃与弗朗科·马泰斯）</span>
+            <span><strong>展馆:</strong> Palazzo Franchetti（弗兰凯蒂宫）</span>
+            <span><strong>时间:</strong> 18:35 – 19:00 (Day 2 · 6月20日)</span>
+        </div>
+    </div>
+    <div class="media-container">
+        <div class="media-box"><img src="https://images-prod.dazeddigital.com/1400/azure/dazed-prod/1440/4/1444571.jpg" alt="RAGE BAIT Installation View - Eva & Franco Mattes" loading="lazy"></div>
+        <div class="media-box"><a href="https://apalazzogallery.com/exhibitions/eva-franco-mattes-rage-bait/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Apalazzo Gallery</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《愤怒诱饵》（RAGE BAIT）是意大利艺术组合伊娃与弗朗科·马泰斯（Eva &amp; Franco Mattes）的新作展，由Autotelic Foundation呈现，策展人为纳迪姆·萨曼（Nadim Samman）与路易莎·豪斯坦（Luisa Haustein）。据 e-flux 公告，项目在威尼斯两处场地展开：俯瞰大运河的弗兰凯蒂宫（Palazzo Franchetti）与朱代卡岛私人泳池 Le Cabanon。</p>
+        <p>需要注意的是，e-flux 标注 Palazzo Franchetti 部分为2026年5月6日至6月30日、11:00–19:00开放；Le Cabanon 部分为2026年5月6日至5月31日、需预约开放。因此在6月19–21日行程中，应把本项作为 Palazzo Franchetti 的可执行加看点，而非双场地完整观看。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>伊娃与弗朗科·马泰斯（Eva &amp; Franco Mattes）是意大利艺术家组合，自1990年代末以来持续以网络艺术（net art）、匿名性、在线表演、数字图像流通、平台劳动与网络伦理为核心媒介。他们长期追踪互联网生活的空隙、失控与道德灰区，是讨论数字文化和艺术制度关系时绕不开的艺术家组合。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>《愤怒诱饵》（RAGE BAIT）把"平台愤怒"从心理现象推进为基础设施问题。展览题名来自互联网俚语：被设计来激怒用户、抢占注意力并迫使情绪先于判断发生的内容。马泰斯并不只是批评这种机制，而是把它转译成装置、视频与生成式AI系统，让观众看到情绪如何被平台、算法和用户共同训练。</p>
+            <p>其中《数据集中的被诅咒之猫》（Cursed Cat (in the Dataset), 2025）尤其关键：艺术家训练模型不断生成同一只黑色无耳猫的变体，并让这些图像重新进入互联网流通，意图污染或改写AI的想象力。这是一种反向数据政治：不是追问AI是否原创，而是追问谁能把幽灵塞进机器。它与《你还在那里吗？》（Are You Still There?, 2025）对心理热线数据和聊天机器人移情效应（Eliza effect）的处理共同构成尖锐问题：当脆弱性也变成训练材料，平台的"回应"究竟是照护、剥削，还是自动化的亲密幻觉？</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">作为 Day 2 的机动加看点：Palazzo Franchetti 位于 Accademia 附近，可在学院美术馆后短时补看；Le Cabanon 部分据 e-flux 资料至5月31日结束，6月行程不作为可执行点。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Gallerie dell'Accademia 步行至 Palazzo Franchetti，约 2–4 分钟。注意 Palazzo Franchetti 开放至19:00，时间非常紧。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">平台政治</span><span class="tag">生成式AI</span><span class="tag">网络文化</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源；社交媒体若被使用仅作为一手图像或展览信息补充，核心论述仍以机构、出版物与艺术家档案为主。</p>
+        <ol class="source-list">
+            <li><a href="https://www.e-flux.com/announcements/rage-bait/" target="_blank" rel="noopener noreferrer">e-flux, Eva &amp; Franco Mattes: RAGE BAIT</a> · English art announcement</li>
+            <li><a href="https://apalazzogallery.com/exhibitions/eva-franco-mattes-rage-bait/" target="_blank" rel="noopener noreferrer">Apalazzo Gallery, Eva &amp; Franco Mattes at Palazzo Franchetti and Le Cabanon</a> · gallery exhibition news</li>
+            <li><a href="https://www.dazeddigital.com/art-photography/article/68556/1/eva-franco-mattes-ragebait-interview" target="_blank" rel="noopener noreferrer">Dazed, Eva &amp; Franco Mattes are bonafide experts in ragebait</a> · English artist interview / art-media feature</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-16 ===== -->
+<section id="ex-16" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Peggy Guggenheim in London: The Making of a Collector</h1>
+        <div class="exhibition-title-cn">佩吉·古根海姆在伦敦：一位收藏家的形成</div>
+        <div class="meta-info">
+            <span><strong>展馆:</strong> Peggy Guggenheim Collection（佩吉·古根海姆美术馆）</span>
+            <span><strong>时间:</strong> 10:00 – 11:20 (Day 3 · 6月21日)</span>
+        </div>
+    </div>
+        <div class="media-container">
+        <div class="media-box"><img src="https://www.guggenheim-venice.it/wp-content/uploads/2026/05/peggy-guggenheim-london.jpg" alt="Peggy Guggenheim Exhibition View"></div>
+        <div class="media-box"><a href="https://www.guggenheim-venice.it/en/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Peggy Guggenheim Collection</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《佩吉·古根海姆在伦敦：一位收藏家的形成》（Peggy Guggenheim in London: The Making of a Collector）在佩吉·古根海姆美术馆（Peggy Guggenheim Collection）呈现。据美术馆官方页面，展览回到佩吉·古根海姆（Peggy Guggenheim）在伦敦的早期收藏与展览活动，考察其现代艺术网络如何形成。</p>
+        <p>展览的重点不是神话化收藏家个人，而是追踪画廊、艺术家、批评家、市场和战前欧洲政治气候如何共同塑造现代艺术收藏。</p>
+    </div>
+    <div class="content-section">
+        <h2>机构与历史网络</h2>
+        <p>佩吉·古根海姆（Peggy Guggenheim, 1898–1979）是美国收藏家与画廊经营者，曾在伦敦经营古根海姆青年画廊（Guggenheim Jeune），后在纽约创办"本世纪艺术画廊"（Art of This Century），对欧洲现代主义、超现实主义和战后美国艺术的流通具有重要影响。本展的"艺术家"更准确地说是机构档案与收藏史主体。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>这场展览的价值在于把收藏史从个人传奇中拉出来。佩吉·古根海姆常被叙述为有魅力的赞助人，但"收藏家的形成"更应被理解为一种社会技术：她通过伦敦画廊空间、跨国人脉、风险投资和战争前夜的文化迁移，把现代艺术组织成可购买、可展览、可叙述的网络。</p>
+            <p>因此，观看这场展览时不应只寻找名作，而要观察制度如何生产"重要性"。哪些艺术家被纳入收藏史？哪些关系被档案保存？哪些市场决策后来被改写为审美判断？它提供的不是单纯怀旧，而是一次关于现代艺术制度如何被私人资本、流亡政治和性别化劳动共同建构的案例。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">Day 3 从档案社会学开始，观看收藏人如何通过空间、关系和市场建立现代艺术网络。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">坐水上巴士至 Accademia 或 Salute，步行入馆。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">档案社会学</span><span class="tag">收藏史</span><span class="tag">机构网络</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.guggenheim-venice.it/en/whats-on/exhibitions/peggy-guggenheim-in-london-the-making-of-a-collector/" target="_blank" rel="noopener noreferrer">Peggy Guggenheim Collection, Peggy Guggenheim in London</a> · official museum page</li>
+            <li><a href="https://www.royalacademy.org.uk/exhibition/peggy-guggenheim-in-london" target="_blank" rel="noopener noreferrer">Royal Academy of Arts, Peggy Guggenheim in London</a> · institutional exhibition page</li>
+        </ol>
+    </div>
+</section>
+
+
+
+
+<!-- ===== EX-17 ===== -->
+<section id="ex-17" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">The-exchange-value-of-language-has-fallen-to-zero</h1>
+        <div class="exhibition-title-cn">语言的交换价值已经跌至零</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Joseph Kosuth</span>
+            <span><strong>展馆:</strong> Berggruen Institute Europe / Casa dei Tre Oci（贝格鲁恩欧洲研究院·三只眼之家）</span>
+            <span><strong>时间:</strong> 12:00 – 12:50 (Day 3 · 6月21日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://berggruenarts.org/media/yootheme/cache/b4/A%20Chain%20of%20Resemblance_Tre%20Oci_Marco%20Cappelletti%202-b4fc3eaf.webp" alt="Kosuth Installation View at Tre Oci" loading="lazy"></div>
+        <div class="media-box"><a href="https://berggruenarts.org/en/exhibitions/current-exhibitions" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Berggruen Institute</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《语言的交换价值已经跌至零》（The-exchange-value-of-language-has-fallen-to-zero）是约瑟夫·科苏斯（Joseph Kosuth）在贝格鲁恩欧洲研究院/三只眼之家（Berggruen Institute Europe / Casa dei Tre Oci）的项目。据Marsilio Arte与贝格鲁恩艺术与文化页面，展览延续科苏斯以语言、定义、引用和空间文本进行观念艺术（conceptual art）研究的路径。</p>
+        <p>题名把马克思主义价值术语带入语言政治：当语言被平台、资本和公共话语过度流通，它是否还具有交换、承诺或真理的能力？</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>约瑟夫·科苏斯（Joseph Kosuth）是美国观念艺术的重要人物，1960年代以来以文本、定义、霓虹、引用和哲学命题挑战艺术对象的物质中心主义。他的作品常把维特根斯坦（Ludwig Wittgenstein）、人类学、文学和制度语境引入展览现场。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>科苏斯的题名几乎像一条诊断：语言仍在流通，但它的交换价值已经接近崩塌。社交媒体、政治宣传、艺术市场声明和机构文本都让语言过量生产，结果不是意义增多，而是信任稀释。观念艺术在这里重新获得当代性，因为它最早就把艺术从物转向命题、语境和制度。</p>
+            <p>然而，科苏斯也面临自身传统的困境：当文本艺术已经成为成熟的博物馆语言，它是否还能有效批判语言制度？若作品只是重复观念艺术经典语法，它会变成优雅的语言纪念碑；若它能触及当下语言通胀和价值崩塌，它就会把威尼斯变成一个关于公共话语失效的实验室。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">从 Peggy Guggenheim 转向 Giudecca 岛，把收藏制度问题推进到语言与价值问题。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Zattere 坐 Line 2 至 Zitelle，步行入馆。<br>注：本展览参观结束后，安排有 12:50 – 14:10 的朱代卡岛（Giudecca）长午餐与小憩时间。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">观念艺术</span><span class="tag">语言与资本</span><span class="tag">思想场</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.marsilioarte.it/en/events-and-exhibitions/the-exchange-value-of-language-has-fallen-to-zero/" target="_blank" rel="noopener noreferrer">Marsilio Arte, The-exchange-value-of-language-has-fallen-to-zero</a> · official publication / exhibition page</li>
+            <li><a href="https://berggruenarts.org/en/?view=article&id=193:the-exchange-value-of-language-has-fallen-to-zero-eng&catid=2" target="_blank" rel="noopener noreferrer">Berggruen Arts &amp; Culture, The-exchange-value-of-language-has-fallen-to-zero</a> · institutional page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-18 ===== -->
+<section id="ex-18" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">Eroi d'Oro</h1>
+        <div class="exhibition-title-cn">黄金英雄</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Georg Baselitz</span>
+            <span><strong>展馆:</strong> Fondazione Giorgio Cini（乔治·奇尼基金会）</span>
+            <span><strong>时间:</strong> 14:30 – 16:00 (Day 3 · 6月21日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://static-assets.artlogic.net/w_2000,h_2000,c_limit,f_auto,fl_lossy,q_auto:good/ws-ropac/usr/images/news/main_image/items/f0/f011096bdef84604984aaf7e77f3cdbc/2_007_georgbaselitz_fondazionecini-low.jpg" alt="Eroi d'Oro Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://gagosian.com/news/museum-exhibitions/georg-baselitz-eroi-d-oro-fondazione-giorgio-cini-venice/" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Gagosian</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《黄金英雄》（Eroi d'Oro）是格奥尔格·巴塞利茨（Georg Baselitz）在乔治·奇尼基金会（Fondazione Giorgio Cini）的展览。据基金会官方页面，展览围绕巴塞利茨的"英雄"（Helden / Heroes）母题、倒置图像和晚期绘画语言展开，并以金色/金箔效果与威尼斯岛上修道院语境发生关系。</p>
+        <p>题名中的"英雄"并不稳定：在巴塞利茨的战后德国语境中，英雄形象往往破败、倒置、受伤，难以承担传统纪念碑功能。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>格奥尔格·巴塞利茨（Georg Baselitz）是德国画家、雕塑家和版画家，战后德国新表现主义（Neo-Expressionism）核心人物之一。自1960年代以来，他以粗粝人物、倒置图像、历史创伤和绘画姿态挑战德国绘画在战争之后的再出发问题。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>巴塞利茨的"英雄"从来不是胜利者，而是战后废墟中的反英雄。倒置图像使人物失去纪念碑稳定性，粗暴笔触则拒绝古典英雄的完整身体。《黄金英雄》（Eroi d'Oro）若引入金色材料或金色效果，就会进一步制造矛盾：黄金通常象征神圣、价值和荣耀，但在巴塞利茨那里，它可能只是在废墟上发亮。</p>
+            <p>乔治·奇尼基金会的修道院空间会使这种矛盾更强。威尼斯的宗教和收藏传统容易把金色推向崇高，而巴塞利茨把崇高拖回战后德国的破损身体。观看时应警惕把晚期巴塞利茨仅当作市场化大师风格；更重要的是看他如何反复拆解欧洲男性英雄叙事。</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">午后进入 San Giorgio Maggiore 岛，在修道院空间中观看晚期 Baselitz 的英雄母题。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Zitelle 坐 Line 2 至 San Giorgio，步行入场。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">新表现主义</span><span class="tag">倒置图像</span><span class="tag">金箔</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.cini.it/eventi/georg-baselitz-eroi-d-oro/" target="_blank" rel="noopener noreferrer">Fondazione Giorgio Cini, Georg Baselitz. Eroi d'Oro</a> · official foundation page</li>
+        </ol>
+    </div>
+</section>
+
+<!-- ===== EX-19 ===== -->
+<section id="ex-19" class="page">
+    <div class="exhibition-header">
+        <h1 class="exhibition-title">The Shape of Time</h1>
+        <div class="exhibition-title-cn">时间的形状</div>
+        <div class="meta-info">
+            <span><strong>艺术家:</strong> Barry X Ball</span>
+            <span><strong>展馆:</strong> Basilica di San Giorgio Maggiore（圣乔治·马焦雷大教堂）</span>
+            <span><strong>时间:</strong> 16:15 – 17:30 (Day 3 · 6月21日)</span>
+        </div>
+    </div>
+            <div class="media-container">
+        <div class="media-box"><img src="https://observer.com/wp-content/uploads/sites/2/2026/05/Barry-X-Ball-Installation-view-ph-Francesco-Allegretto-Buddha.jpg" alt="The Shape of Time Installation View" loading="lazy"></div>
+        <div class="media-box"><a href="https://www.wallpaper.com/art/exhibitions-shows/barry-x-ball-the-shape-of-time-venice-review" target="_blank" rel="noopener noreferrer" class="install-link-box"><span class="install-link-label">Installation Views</span><span class="install-link-source">Wallpaper*</span></a></div>
+    </div>
+    <div class="content-section">
+        <h2>展览信息</h2>
+        <p>《时间的形状》（The Shape of Time）是巴里·X·鲍尔（Barry X Ball）在圣乔治·马焦雷大教堂（Basilica di San Giorgio Maggiore）的展览。据圣乔治·马焦雷修道院（Abbazia di San Giorgio Maggiore）官方页面，项目把鲍尔以数字扫描、CNC雕刻、稀有石材和手工抛光结合的雕塑实践置入帕拉迪奥式建筑空间。</p>
+        <p>展览题名直接指向时间的物质化：古典雕塑、数字加工、地质石材、手工劳动和教堂光线在同一场域中叠合。</p>
+    </div>
+    <div class="content-section">
+        <h2>艺术家信息</h2>
+        <p>巴里·X·鲍尔（Barry X Ball）是美国雕塑家，以重新激活古典雕塑传统而著称。他常使用3D扫描、数字建模、计算机数控（CNC）加工、稀有石材和长时间手工修整，把历史雕塑语言转化为高度技术化的当代物件。</p>
+    </div>
+    <div class="content-section">
+        <h2>展览评论 · 批评入口</h2>
+        <div class="critic-box">
+            <p>鲍尔的雕塑最有意思的地方，是它拒绝把技术和手工分成两个时代。CNC雕刻不是手工的替代品，而是把手工劳动推向新的时间结构：机器先粗暴地打开石材，手再以漫长抛光修正表面。于是"时间的形状"不是抽象诗意，而是地质时间、艺术史时间、机器时间和劳动时间的复合体。</p>
+            <p>在帕拉迪奥（Andrea Palladio）的教堂空间中，这种复合体会变得更尖锐。建筑秩序要求比例、光线和神圣性；鲍尔的材料则带来高度加工的当代感。展览的关键问题是：当古典形式被数字技术重新生产，它是在复兴传统，还是暴露传统本身一直依赖技术、权力和材料稀缺性？</p>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>现场策略</h2>
+        <div class="strategy-box">作为三日路线的空间高潮；观察新技术、手工劳动和帕拉迪奥式教堂光线之间的冲突。</div>
+    </div>
+    <div class="content-section">
+        <h2>交通节点</h2>
+        <div class="transport-box">从 Fondazione Giorgio Cini 步行约 4–6 分钟。<br>返程坐 Line 2 返回罗马广场（Piazzale Roma）。</div>
+    </div>
+    <div class="content-section">
+        <h2>关键标签</h2>
+        <div class="tag-list">
+            <span class="tag">CNC雕刻</span><span class="tag">手工抛光</span><span class="tag">建筑秩序</span>
+        </div>
+    </div>
+    <div class="content-section">
+        <h2>资料来源</h2>
+        <p class="source-note">资料来源均为非中文来源。</p>
+        <ol class="source-list">
+            <li><a href="https://www.abbaziasangiorgio.it/2026/04/23/barry-x-ball-the-shape-of-time/" target="_blank" rel="noopener noreferrer">Abbazia di San Giorgio Maggiore, Barry X Ball - The Shape of Time</a> · official exhibition page</li>
+            <li><a href="https://artvisor.com/barry-x-ball-basilica-di-san-giorgio-maggiore/" target="_blank" rel="noopener noreferrer">Artvisor, Barry X Ball at the Basilica di San Giorgio Maggiore</a> · English art-media report</li>
+        </ol>
+    </div>
+</section>
+
+    </main>
+</div>
+
+<script>
+    function switchPage(pageId) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => page.classList.remove('active'));
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) targetPage.classList.add('active');
+
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+        const currentActiveNav = document.querySelector(`aside a[href="#${pageId}"]`);
+        if (currentActiveNav) currentActiveNav.classList.add('active');
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) switchPage(hash);
+    });
+</script>
+
+</body>
+</html>
